@@ -18,19 +18,21 @@ public class UnlockDetectionService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        // Create a notification channel for Android 8.0 (API 26) and above
         createNotificationChannel();
+        // Start the service in the foreground with a notification
         startForeground(1, getNotification());
-
         Log.d(TAG, "Unlock Detection Service Started");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Start your unlock detection logic here (register receivers for SCREEN ON, FAILED PASSWORD ATTEMPTS, etc.)
-        return START_STICKY;
+        // Logic for unlock detection service can be started here (e.g. listen for screen unlock attempts, etc.)
+        return START_STICKY;  // Service will be restarted if killed by the system
     }
 
     private Notification getNotification() {
+        // Create a notification to show in the foreground
         return new Notification.Builder(this, CHANNEL_ID)
                 .setContentTitle("Intruder Detection Active")
                 .setContentText("Monitoring failed unlock attempts...")
@@ -39,6 +41,7 @@ public class UnlockDetectionService extends Service {
     }
 
     private void createNotificationChannel() {
+        // Create notification channel for Android 8.0 and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
@@ -54,6 +57,6 @@ public class UnlockDetectionService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return null;  // Service is not bound, return null
     }
 }

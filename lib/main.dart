@@ -17,9 +17,13 @@ class MyApp extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () async {
               try {
-                await platform.invokeMethod("startSecurityService");
-              } catch (e) {
-                print("Error: $e");
+                print('Calling startSecurityService method');
+                final String result = await platform.invokeMethod(
+                  'startSecurityService',
+                );
+                print(result); // Expected: "Security service started"
+              } on PlatformException catch (e) {
+                print("Error: ${e.message}");
               }
             },
             child: Text("Start Security"),
